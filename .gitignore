@@ -1,0 +1,15 @@
+/vendor
+/node_modules
+/.tmp
+/.env
+/.phpunit.result.cache
+/bootstrap/cache/*.php
+/bootstrap/cache/*.tmp
+/storage/*.key
+/storage/app/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/logs/*
+!.gitignore
+!.gitkeep
