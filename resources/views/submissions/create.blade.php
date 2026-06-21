@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('title', 'Submit Solution | NeonJudge')
+@section('body_class', 'page-submission-create')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/pages/submission-create.css') }}">
+@endpush
 
 @section('content')
 <section class="page-header">

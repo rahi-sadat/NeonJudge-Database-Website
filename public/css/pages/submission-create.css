@@ -1,0 +1,9 @@
+/* Submit solution page only. */
+
+.page-submission-create .code-editor {
+    min-height: 360px;
+}
+
+.page-submission-create .verdict-card {
+    min-height: 220px;
+}

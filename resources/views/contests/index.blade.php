@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('title', 'Contests | NeonJudge')
+@section('body_class', 'page-contests')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/pages/contests.css') }}">
+@endpush
 
 @section('content')
 <section class="page-header">

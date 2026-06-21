@@ -1,0 +1,14 @@
+/* Contests list page only. */
+
+.page-contests .toolbar {
+    margin-bottom: 16px;
+}
+
+.page-contests [data-contest-table] td:first-child a {
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.page-contests [data-contest-table] td:first-child a:hover {
+    color: var(--violet-bright);
+}

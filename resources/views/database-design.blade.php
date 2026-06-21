@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('title', 'Database Design | NeonJudge')
+@section('body_class', 'page-database-design')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/pages/database-design.css') }}">
+@endpush
 
 @section('content')
 <section class="page-header">

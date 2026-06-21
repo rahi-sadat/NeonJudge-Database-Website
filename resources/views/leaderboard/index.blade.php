@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('title', 'Leaderboard | NeonJudge')
+@section('body_class', 'page-leaderboard')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/pages/leaderboard.css') }}">
+@endpush
 
 @section('content')
 <section class="page-header">

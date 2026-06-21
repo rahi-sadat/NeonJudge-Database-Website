@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('title', 'NeonJudge | Online Judge Platform')
+@section('body_class', 'page-home')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/pages/home.css') }}">
+@endpush
 
 @section('content')
 <section class="hero">

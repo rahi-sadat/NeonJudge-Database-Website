@@ -1,0 +1,13 @@
+/* Problem statement page only. */
+
+.page-problem-details .page-header .btn {
+    width: max-content;
+}
+
+.page-problem-details .problem-statement p {
+    max-width: 760px;
+}
+
+.page-problem-details .problem-statement pre {
+    margin-top: 10px;
+}

@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('title', 'Admin Panel | NeonJudge')
+@section('body_class', 'page-admin')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/pages/admin.css') }}">
+@endpush
 
 @section('content')
 <section class="page-header">

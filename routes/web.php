@@ -13,9 +13,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/database-design', [HomeController::class, 'databaseDesign'])->name('database.design');
 
+Route::view('/login', 'auth.login')->name('login');
+Route::view('/register', 'auth.register')->name('register');
+
 Route::get('/contests', [ContestController::class, 'index'])->name('contests.index');
+Route::view('/contests/create', 'contests.create')->name('contests.create');
 Route::get('/contests/{slug}', [ContestController::class, 'show'])->name('contests.show');
 
+Route::get('/practice', [ProblemController::class, 'index'])->name('practice.index');
 Route::get('/problems', [ProblemController::class, 'index'])->name('problems.index');
 Route::get('/problems/{code}', [ProblemController::class, 'show'])->name('problems.show');
 
@@ -23,6 +28,6 @@ Route::get('/submit/{problem?}', [SubmissionController::class, 'create'])->name(
 Route::post('/submit', [SubmissionController::class, 'store'])->name('submissions.store');
 
 Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard.index');
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+Route::get('/profile', [DashboardController::class, 'index'])->name('profile.show');
 Route::get('/setter', [SetterController::class, 'index'])->name('setter.index');
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');

@@ -1,0 +1,10 @@
+/* Leaderboard / standing page only. */
+
+.page-leaderboard .toolbar {
+    margin-bottom: 16px;
+}
+
+.page-leaderboard .top-rank td:first-child {
+    color: var(--green-bright);
+    font-weight: 800;
+}

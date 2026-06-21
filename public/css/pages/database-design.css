@@ -1,0 +1,9 @@
+/* Database design page only. */
+
+.page-database-design .cards-grid .card h3 {
+    margin-bottom: 8px;
+}
+
+.page-database-design .pill-cloud {
+    margin-top: 14px;
+}

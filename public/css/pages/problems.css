@@ -1,0 +1,13 @@
+/* Problems index / practice page only. */
+
+.page-problems .practice-toolbar {
+    margin-bottom: 20px;
+}
+
+.page-problems .problem-card h3 a {
+    color: var(--text-primary);
+}
+
+.page-problems .problem-card h3 a:hover {
+    color: var(--violet-bright);
+}

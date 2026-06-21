@@ -8,6 +8,8 @@ if (codeCanvas && !prefersReducedMotion) {
     let width = 0;
     let height = 0;
     const fontSize = 15;
+    const frameDelay = 1000 / 30;
+    let lastFrame = 0;
 
     function resizeCodeCanvas() {
         width = codeCanvas.width = window.innerWidth;
@@ -16,7 +18,13 @@ if (codeCanvas && !prefersReducedMotion) {
         columns = Array.from({ length: count }, () => Math.random() * height);
     }
 
-    function drawCodeRain() {
+    function drawCodeRain(timestamp = 0) {
+        if (timestamp - lastFrame < frameDelay) {
+            window.requestAnimationFrame(drawCodeRain);
+            return;
+        }
+
+        lastFrame = timestamp;
         context.fillStyle = 'rgba(5, 6, 12, 0.16)';
         context.fillRect(0, 0, width, height);
         context.font = `${fontSize}px Cascadia Code, Consolas, monospace`;
@@ -76,34 +84,6 @@ if ('IntersectionObserver' in window) {
     });
 } else {
     revealTargets.forEach((item) => item.classList.add('visible'));
-}
-
-document.querySelectorAll('a[href]').forEach((link) => {
-    link.addEventListener('click', (event) => {
-        const isModified = event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
-        const target = link.getAttribute('target');
-        const href = link.getAttribute('href');
-
-        if (isModified || target || !href || href.startsWith('#')) {
-            return;
-        }
-
-        const nextUrl = new URL(link.href, window.location.href);
-
-        if (nextUrl.origin !== window.location.origin || link.hasAttribute('download')) {
-            return;
-        }
-
-        if (nextUrl.pathname === window.location.pathname && nextUrl.hash) {
-            return;
-        }
-
-        event.preventDefault();
-        document.body.classList.add('is-leaving');
-        window.setTimeout(() => {
-            window.location.href = nextUrl.href;
-        }, 160);
-    });
 }
 
 document.querySelectorAll('[data-filter]').forEach((button) => {

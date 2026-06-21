@@ -1,0 +1,13 @@
+/* Create contest page only. */
+
+.page-contest-create .form-card h2 {
+    margin-bottom: 2px;
+}
+
+.page-contest-create .verdict-card .eyebrow {
+    margin-bottom: 12px;
+}
+
+.page-contest-create .auth-card {
+    text-align: left;
+}

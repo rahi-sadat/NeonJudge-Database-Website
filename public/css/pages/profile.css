@@ -1,0 +1,9 @@
+/* User statistics / profile page only. */
+
+.page-profile .stat-grid {
+    margin-bottom: 20px;
+}
+
+.page-profile .auth-card {
+    text-align: left;
+}

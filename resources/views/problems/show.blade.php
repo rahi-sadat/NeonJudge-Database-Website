@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('title', $problem['title'].' | NeonJudge')
+@section('body_class', 'page-problem-details')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/pages/problem-details.css') }}">
+@endpush
 
 @section('content')
 <section class="page-header">

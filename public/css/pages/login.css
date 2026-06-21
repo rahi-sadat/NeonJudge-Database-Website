@@ -1,0 +1,9 @@
+/* Login page only. */
+
+.page-login .auth-card {
+    margin-inline: auto;
+}
+
+.page-login .auth-card .btn {
+    width: 100%;
+}

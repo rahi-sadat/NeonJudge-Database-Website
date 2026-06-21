@@ -1,0 +1,11 @@
+/* Problem setter page only. */
+
+.page-setter .action-card {
+    min-height: 92px;
+    display: grid;
+    align-items: center;
+}
+
+.page-setter .form-card {
+    gap: 16px;
+}

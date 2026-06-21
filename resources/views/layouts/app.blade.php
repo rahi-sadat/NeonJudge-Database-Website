@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'NeonJudge')</title>
     <link rel="stylesheet" href="{{ asset('css/neonjudge.css') }}">
+    @stack('styles')
 </head>
-<body>
+<body class="@yield('body_class')">
     <canvas class="code-rain" data-code-rain aria-hidden="true"></canvas>
     <div class="cyber-grid" aria-hidden="true"></div>
     <div class="scanline" aria-hidden="true"></div>

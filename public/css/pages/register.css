@@ -1,0 +1,10 @@
+/* Register page only. */
+
+.page-register .auth-card {
+    width: min(100%, 520px);
+    margin-inline: auto;
+}
+
+.page-register .auth-card .btn {
+    width: 100%;
+}

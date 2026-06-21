@@ -1,0 +1,9 @@
+/* Contest details page only. */
+
+.page-contest-details .page-header .badge {
+    width: max-content;
+}
+
+.page-contest-details .section > .btn {
+    margin-top: 20px;
+}

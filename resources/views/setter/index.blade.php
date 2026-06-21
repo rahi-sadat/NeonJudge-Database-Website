@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('title', 'Problem Setter Panel | NeonJudge')
+@section('body_class', 'page-setter')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/pages/setter.css') }}">
+@endpush
 
 @section('content')
 <section class="page-header">
