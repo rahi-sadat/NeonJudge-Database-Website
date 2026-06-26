@@ -35,7 +35,14 @@
         <div class="nav-actions" aria-label="Account and workspace">
             @if ($currentUser)
                 <a href="{{ route('contests.create') }}" @if(request()->routeIs('contests.create')) aria-current="page" @endif>Create Contest</a>
+                @if ($currentUser->isAdmin())
+                    <a href="{{ route('admin.index') }}" @if(request()->routeIs('admin.*')) aria-current="page" @endif>Dashboard</a>
+                @endif
                 <a class="nav-handle" href="{{ route('profile.show') }}" @if(request()->routeIs('profile.*')) aria-current="page" @endif>{{ $handle }}</a>
+                <form class="nav-logout-form" method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button class="nav-logout" type="submit">Logout</button>
+                </form>
             @else
                 <a href="{{ route('login') }}" @if(request()->routeIs('login')) aria-current="page" @endif>Login</a>
                 <a class="nav-register" href="{{ route('register') }}" @if(request()->routeIs('register')) aria-current="page" @endif>Register</a>

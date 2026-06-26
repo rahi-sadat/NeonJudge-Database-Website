@@ -15,27 +15,37 @@
 </section>
 
 <section class="section auth-section">
-    <form class="auth-card">
+    <form class="auth-card" method="POST" action="{{ route('register.store') }}">
+        @csrf
         <h2>Create Account</h2>
         <label>
             Handle
-            <input class="text-input" type="text" name="handle" autocomplete="username">
+            <input class="text-input" type="text" name="handle" value="{{ old('handle') }}" autocomplete="username" required autofocus>
             <small>This will be your public contest name.</small>
+            @error('handle')
+                <small class="field-error">{{ $message }}</small>
+            @enderror
         </label>
         <label>
             Email
-            <input class="text-input" type="email" name="email" autocomplete="email">
+            <input class="text-input" type="email" name="email" value="{{ old('email') }}" autocomplete="email" required>
+            @error('email')
+                <small class="field-error">{{ $message }}</small>
+            @enderror
         </label>
         <label>
             Password
-            <input class="text-input" type="password" name="password" autocomplete="new-password">
+            <input class="text-input" type="password" name="password" autocomplete="new-password" required>
             <small>Password should contain at least five characters.</small>
+            @error('password')
+                <small class="field-error">{{ $message }}</small>
+            @enderror
         </label>
         <label>
             Confirm Password
-            <input class="text-input" type="password" name="password_confirmation" autocomplete="new-password">
+            <input class="text-input" type="password" name="password_confirmation" autocomplete="new-password" required>
         </label>
-        <button class="btn btn-primary" type="button">Register</button>
+        <button class="btn btn-primary" type="submit">Register</button>
         <p class="muted">Already registered? <a href="{{ route('login') }}">Login instead</a>.</p>
     </form>
 </section>

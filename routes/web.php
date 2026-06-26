@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContestController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
@@ -11,10 +12,12 @@ use App\Http\Controllers\SubmissionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/database-design', [HomeController::class, 'databaseDesign'])->name('database.design');
 
 Route::view('/login', 'auth.login')->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.store');
 Route::view('/register', 'auth.register')->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.store');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/contests', [ContestController::class, 'index'])->name('contests.index');
 Route::view('/contests/create', 'contests.create')->name('contests.create');
