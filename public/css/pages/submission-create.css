@@ -7,3 +7,15 @@
 .page-submission-create .verdict-card {
     min-height: 220px;
 }
+
+.page-submission-create .judge-message {
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    font-size: 0.88rem;
+}
+
+.page-submission-create .judge-message-error {
+    border: 1px solid rgba(244, 63, 94, 0.35);
+    color: #fb7185;
+    background: var(--rose-soft);
+}
