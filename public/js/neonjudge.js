@@ -1,52 +1,3 @@
-const codeCanvas = document.querySelector('[data-code-rain]');
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-if (codeCanvas && !prefersReducedMotion) {
-    const context = codeCanvas.getContext('2d');
-    const glyphs = ['0', '1', '{', '}', '<', '>', '/', '#', '$', 'AC', 'WA', 'TLE', 'SQL', 'JOIN', 'RUN'];
-    let columns = [];
-    let width = 0;
-    let height = 0;
-    const fontSize = 15;
-    const frameDelay = 1000 / 30;
-    let lastFrame = 0;
-
-    function resizeCodeCanvas() {
-        width = codeCanvas.width = window.innerWidth;
-        height = codeCanvas.height = window.innerHeight;
-        const count = Math.ceil(width / fontSize);
-        columns = Array.from({ length: count }, () => Math.random() * height);
-    }
-
-    function drawCodeRain(timestamp = 0) {
-        if (timestamp - lastFrame < frameDelay) {
-            window.requestAnimationFrame(drawCodeRain);
-            return;
-        }
-
-        lastFrame = timestamp;
-        context.fillStyle = 'rgba(5, 6, 12, 0.16)';
-        context.fillRect(0, 0, width, height);
-        context.font = `${fontSize}px Cascadia Code, Consolas, monospace`;
-
-        columns.forEach((y, index) => {
-            const text = glyphs[Math.floor(Math.random() * glyphs.length)];
-            const x = index * fontSize;
-            const accent = index % 3 === 0 ? '139, 92, 246' : index % 3 === 1 ? '52, 211, 153' : '59, 130, 246';
-            context.fillStyle = `rgba(${accent}, ${0.35 + Math.random() * 0.45})`;
-            context.fillText(text, x, y);
-
-            columns[index] = y > height + Math.random() * 800 ? 0 : y + fontSize;
-        });
-
-        window.requestAnimationFrame(drawCodeRain);
-    }
-
-    resizeCodeCanvas();
-    drawCodeRain();
-    window.addEventListener('resize', resizeCodeCanvas);
-}
-
 const navToggle = document.querySelector('[data-nav-toggle]');
 const navLinks = document.querySelector('[data-nav-links]');
 
@@ -64,26 +15,6 @@ if (navToggle && navLinks) {
             navToggle.setAttribute('aria-expanded', 'false');
         });
     });
-}
-
-const revealTargets = document.querySelectorAll('.hero, .page-header, .section, .card, .table-wrap, .judge-console');
-
-if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.12 });
-
-    revealTargets.forEach((item) => {
-        item.classList.add('reveal');
-        observer.observe(item);
-    });
-} else {
-    revealTargets.forEach((item) => item.classList.add('visible'));
 }
 
 document.querySelectorAll('[data-filter]').forEach((button) => {
@@ -126,23 +57,28 @@ function refreshProblems() {
 
 [problemSearch, problemFilter, problemSort].forEach((control) => control?.addEventListener('input', refreshProblems));
 
-const submissionForm = document.querySelector('[data-submission-form]');
-const verdictLabel = document.querySelector('[data-verdict-label]');
+document.querySelectorAll('[data-judge-form]').forEach((form) => {
+    form.addEventListener('submit', () => {
+        const button = form.querySelector('[data-judge-submit]');
+        const status = form.querySelector('[data-judge-status]');
 
-if (submissionForm && verdictLabel) {
-    submissionForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const verdicts = ['Accepted', 'Wrong Answer', 'Time Limit Exceeded', 'Compilation Error'];
-        verdictLabel.textContent = 'Pending';
-        verdictLabel.style.color = 'var(--violet-bright)';
+        if (button) {
+            button.disabled = true;
+            button.textContent = 'Judging...';
+        }
 
-        setTimeout(() => {
-            const verdict = verdicts[Math.floor(Math.random() * verdicts.length)];
-            verdictLabel.textContent = verdict;
-            verdictLabel.style.color = verdict === 'Accepted' ? 'var(--green-bright)' : 'var(--rose)';
-        }, 1400);
+        if (status) {
+            status.className = 'judge-inline-status judge-status-judging';
+            status.innerHTML = `
+                <span class="judge-status-dot"></span>
+                <span>
+                    <strong>Judging...</strong>
+                    <small>Running your code against Judge0.</small>
+                </span>
+            `;
+        }
     });
-}
+});
 
 document.querySelectorAll('[data-sort-leaderboard]').forEach((button) => {
     button.addEventListener('click', () => {

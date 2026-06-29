@@ -1,7 +1,14 @@
 /* Problem statement page only. */
 
-.page-problem-details .page-header .btn {
-    width: max-content;
+.page-problem-details .problem-workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(420px, 1.05fr);
+    gap: 24px;
+    align-items: start;
+}
+
+.page-problem-details .problem-statement {
+    max-width: none;
 }
 
 .page-problem-details .problem-statement p {
@@ -10,4 +17,211 @@
 
 .page-problem-details .problem-statement pre {
     margin-top: 10px;
+}
+
+.page-problem-details .judge-panel {
+    position: sticky;
+    top: 84px;
+    display: grid;
+    gap: 18px;
+}
+
+.page-problem-details .judge-panel:hover {
+    transform: none;
+}
+
+.page-problem-details .judge-panel-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.page-problem-details .judge-panel-top .eyebrow {
+    margin-bottom: 10px;
+}
+
+.page-problem-details .judge-panel h2 {
+    font-size: 1.35rem;
+}
+
+.page-problem-details .judge-form {
+    display: grid;
+    gap: 14px;
+}
+
+.page-problem-details .judge-solved-note {
+    padding: 12px 14px;
+    border: 1px solid var(--border-green);
+    border-radius: var(--radius-md);
+    color: var(--green-bright);
+    background: var(--green-soft);
+}
+
+.page-problem-details .judge-solved-note strong,
+.page-problem-details .judge-solved-note small {
+    display: block;
+}
+
+.page-problem-details .judge-solved-note small {
+    margin-top: 2px;
+    color: var(--text-secondary);
+}
+
+.page-problem-details .judge-testcases {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.page-problem-details .judge-result {
+    display: grid;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+.page-problem-details .judge-result h3 {
+    color: var(--text-secondary);
+}
+
+.page-problem-details .judge-result-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.page-problem-details .judge-result-grid span {
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    background: rgba(255,255,255,0.025);
+}
+
+.page-problem-details .judge-result-grid strong {
+    display: block;
+    margin-top: 4px;
+    color: var(--text-primary);
+}
+
+.page-problem-details .judge-inline-status {
+    min-height: 58px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid var(--border-accent);
+    border-radius: var(--radius-md);
+    color: var(--text-accent);
+    background: var(--violet-soft);
+}
+
+.page-problem-details .judge-inline-status.is-hidden {
+    display: none;
+}
+
+.page-problem-details .judge-inline-status strong,
+.page-problem-details .judge-inline-status small {
+    display: block;
+}
+
+.page-problem-details .judge-inline-status small {
+    margin-top: 2px;
+    color: var(--text-secondary);
+}
+
+.page-problem-details .judge-status-dot {
+    flex: 0 0 auto;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--violet-bright);
+    box-shadow: 0 0 14px var(--violet-bright);
+}
+
+.page-problem-details .judge-status-judging .judge-status-dot {
+    animation: judge-pulse 0.9s ease-in-out infinite;
+}
+
+.page-problem-details .judge-status-accepted {
+    color: var(--green-bright);
+    border-color: var(--border-green);
+    background: var(--green-soft);
+}
+
+.page-problem-details .judge-status-accepted .judge-status-dot {
+    background: var(--green-bright);
+    box-shadow: 0 0 14px var(--green-bright);
+}
+
+.page-problem-details .judge-status-error,
+.page-problem-details .judge-status-wrong-answer,
+.page-problem-details .judge-status-internal-error,
+.page-problem-details .judge-status-compilation-error,
+.page-problem-details .judge-status-runtime-error-nzec {
+    color: #fb7185;
+    border-color: rgba(244, 63, 94, 0.35);
+    background: var(--rose-soft);
+}
+
+.page-problem-details .judge-status-error .judge-status-dot,
+.page-problem-details .judge-status-wrong-answer .judge-status-dot,
+.page-problem-details .judge-status-internal-error .judge-status-dot,
+.page-problem-details .judge-status-compilation-error .judge-status-dot,
+.page-problem-details .judge-status-runtime-error-nzec .judge-status-dot {
+    background: #fb7185;
+    box-shadow: 0 0 14px #fb7185;
+}
+
+.page-problem-details .judge-form .btn:disabled {
+    cursor: wait;
+    opacity: 0.86;
+    transform: none;
+}
+
+@keyframes judge-pulse {
+    0%, 100% {
+        opacity: 0.45;
+        transform: scale(0.82);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.14);
+    }
+}
+
+.judge-message {
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    font-size: 0.88rem;
+}
+
+.judge-message-error {
+    border: 1px solid rgba(244, 63, 94, 0.35);
+    color: #fb7185;
+    background: var(--rose-soft);
+}
+
+@media (max-width: 1100px) {
+    .page-problem-details .problem-workspace {
+        grid-template-columns: 1fr;
+    }
+
+    .page-problem-details .judge-panel {
+        position: static;
+    }
+}
+
+@media (max-width: 640px) {
+    .page-problem-details .judge-panel-top,
+    .page-problem-details .judge-testcases,
+    .page-problem-details .judge-result-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .page-problem-details .judge-panel-top {
+        display: grid;
+    }
 }
