@@ -15,6 +15,7 @@
     $judgeResult = session('judge_result');
     $judgeStatusClass = $judgeResult ? trim(preg_replace('/[^a-z0-9]+/', '-', strtolower($judgeResult['status'])), '-') : 'pending';
     $hasAcceptedSubmission = $hasAcceptedSubmission ?? false;
+    $pastSubmissions = $pastSubmissions ?? collect();
 @endphp
 
 <section class="page-header">
@@ -151,8 +152,63 @@
                     <h3>Compiler Output</h3>
                     <pre>{{ $judgeResult['compile_output'] }}</pre>
                 @endif
+
+                @if (! empty($judgeResult['message']) && empty($judgeResult['compile_output']) && empty($judgeResult['stderr']))
+                    <h3>Judge Message</h3>
+                    <pre>{{ $judgeResult['message'] }}</pre>
+                @endif
             </div>
         @endif
+
+        <div class="judge-history">
+            <div class="judge-history-top">
+                <div>
+                    <p class="eyebrow">History</p>
+                    <h2>{{ $problem['code'] }} Attempts</h2>
+                </div>
+
+                @if ($hasAcceptedSubmission)
+                    <x-badge type="accepted">Solved</x-badge>
+                @endif
+            </div>
+
+            @guest
+                <p class="muted">Login to save attempts and see your verdict history for this problem.</p>
+            @else
+                @if ($pastSubmissions->isEmpty())
+                    <p class="muted">No saved attempts for this problem yet.</p>
+                @else
+                    <div class="table-wrap">
+                        <table class="data-table judge-history-table">
+                            <thead>
+                                <tr>
+                                    <th>Verdict</th>
+                                    <th>Language</th>
+                                    <th>Time</th>
+                                    <th>Memory</th>
+                                    <th>Submitted</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($pastSubmissions as $submission)
+                                    @php
+                                        $statusClass = trim(preg_replace('/[^a-z0-9]+/', '-', strtolower($submission->status)), '-');
+                                        $languageName = $languages[$submission->language_id] ?? 'Language '.$submission->language_id;
+                                    @endphp
+                                    <tr>
+                                        <td><x-badge :type="$statusClass">{{ $submission->status }}</x-badge></td>
+                                        <td>{{ $languageName }}</td>
+                                        <td>{{ $submission->execution_time ?? '-' }}s</td>
+                                        <td>{{ $submission->memory_used ?? '-' }} KB</td>
+                                        <td>{{ optional($submission->created_at)->diffForHumans() ?? '-' }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+            @endguest
+        </div>
     </aside>
 </section>
 @endsection

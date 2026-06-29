@@ -19,3 +19,48 @@
     color: #fb7185;
     background: var(--rose-soft);
 }
+
+.page-submission-create .submission-history-card {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: 16px;
+}
+
+.page-submission-create .submission-history-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.page-submission-create .submission-history-top .eyebrow {
+    margin-bottom: 10px;
+}
+
+.page-submission-create .submission-history-top h2 {
+    font-size: 1.35rem;
+}
+
+.page-submission-create .submission-solved-note {
+    padding: 12px 14px;
+    border: 1px solid var(--border-green);
+    border-radius: var(--radius-md);
+    color: var(--green-bright);
+    background: var(--green-soft);
+}
+
+.page-submission-create .submission-solved-note strong,
+.page-submission-create .submission-solved-note small {
+    display: block;
+}
+
+.page-submission-create .submission-solved-note small {
+    margin-top: 2px;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 640px) {
+    .page-submission-create .submission-history-top {
+        display: grid;
+    }
+}

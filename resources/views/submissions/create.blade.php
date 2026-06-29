@@ -12,6 +12,9 @@
     $starterCode = "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    cout << \"Hello NeonJudge\" << '\\n';\n    return 0;\n}\n";
     $judgeResult = session('judge_result');
     $judgeStatusClass = $judgeResult ? trim(preg_replace('/[^a-z0-9]+/', '-', strtolower($judgeResult['status'])), '-') : 'pending';
+    $pastSubmissions = $pastSubmissions ?? collect();
+    $hasAcceptedSubmission = $hasAcceptedSubmission ?? false;
+    $selectedProblem = old('problem', $problem ?? 'NJ101');
 @endphp
 
 <section class="page-header">
@@ -25,7 +28,7 @@
         @csrf
         <label>
             Problem Code
-            <input class="text-input" name="problem" value="{{ old('problem', $problem ?? 'NJ101') }}">
+            <input class="text-input" name="problem" value="{{ $selectedProblem }}">
             @error('problem')
                 <small class="field-error">{{ $message }}</small>
             @enderror
@@ -82,5 +85,62 @@
             <div class="loader"></div>
         @endif
     </aside>
+
+    <article class="card submission-history-card">
+        <div class="submission-history-top">
+            <div>
+                <p class="eyebrow">History</p>
+                <h2>{{ strtoupper($selectedProblem) }} Attempts</h2>
+            </div>
+
+            @if ($hasAcceptedSubmission)
+                <x-badge type="accepted">Solved</x-badge>
+            @endif
+        </div>
+
+        @guest
+            <p class="muted">Login to save attempts and see your verdict history for this problem.</p>
+        @else
+            @if ($hasAcceptedSubmission)
+                <div class="submission-solved-note">
+                    <strong>Already solved</strong>
+                    <small>Your Accepted submission is saved in the history below.</small>
+                </div>
+            @endif
+
+            @if ($pastSubmissions->isEmpty())
+                <p class="muted">No submissions saved for this problem yet.</p>
+            @else
+                <div class="table-wrap">
+                    <table class="data-table submission-history-table">
+                        <thead>
+                            <tr>
+                                <th>Verdict</th>
+                                <th>Language</th>
+                                <th>Time</th>
+                                <th>Memory</th>
+                                <th>Submitted</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($pastSubmissions as $submission)
+                                @php
+                                    $statusClass = trim(preg_replace('/[^a-z0-9]+/', '-', strtolower($submission->status)), '-');
+                                    $languageName = $languages[$submission->language_id] ?? 'Language '.$submission->language_id;
+                                @endphp
+                                <tr>
+                                    <td><x-badge :type="$statusClass">{{ $submission->status }}</x-badge></td>
+                                    <td>{{ $languageName }}</td>
+                                    <td>{{ $submission->execution_time ?? '-' }}s</td>
+                                    <td>{{ $submission->memory_used ?? '-' }} KB</td>
+                                    <td>{{ optional($submission->created_at)->diffForHumans() ?? '-' }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
+        @endguest
+    </article>
 </section>
 @endsection

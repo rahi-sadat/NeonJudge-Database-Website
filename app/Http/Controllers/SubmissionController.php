@@ -1,25 +1,27 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use App\Models\Submission;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
-use Illuminate\View\View;
 use Throwable;
 
 class SubmissionController extends Controller
 {
-    public function create(?string $problem = null): View
+    public function create(?string $problem = null): RedirectResponse
     {
-        $languages = config('judge0.languages');
-
-        return view('submissions.create', compact('languages', 'problem'));
+        return redirect()->route('problems.show', strtoupper($problem ?: 'NJ101'));
     }
 
     public function store(Request $request): RedirectResponse
     {
+        if (! Auth::check()) {
+            return back()->withInput()->with('judge_error', 'You must be logged in to submit code.');
+        }
+
         $languages = config('judge0.languages');
 
         $data = $request->validate([
@@ -30,6 +32,7 @@ class SubmissionController extends Controller
             'expected_output' => ['nullable', 'string'],
         ]);
 
+        $problemCode = strtoupper($data['problem']);
         $judgeUrl = rtrim((string) config('judge0.url'), '/');
 
         if ($judgeUrl === '') {
@@ -68,21 +71,83 @@ class SubmissionController extends Controller
             }
 
             $result = $response->json();
+            $verdictStatus = $this->verdictStatus($result);
+            $judgeMessage = $this->judgeMessage($result, $verdictStatus);
+
+            Submission::create([
+                'user_id'        => Auth::id(),
+                'problem_code'   => $problemCode,
+                'language_id'    => (int) $data['language_id'],
+                'source_code'    => $data['source'],
+                'stdin'          => $data['stdin'] ?? '',
+                'expected_output' => $data['expected_output'] ?? null,
+                'stdout'         => data_get($result, 'stdout'),
+                'stderr'         => data_get($result, 'stderr'),
+                'compile_output' => data_get($result, 'compile_output'),
+                'status'         => $verdictStatus,
+                'judge_token'    => data_get($result, 'token'),
+                'execution_time' => data_get($result, 'time'),
+                'memory_used'    => data_get($result, 'memory'),
+            ]);
 
             return back()
                 ->withInput()
                 ->with('judge_result', [
-                    'status' => data_get($result, 'status.description', 'Unknown'),
+                    'status' => $verdictStatus,
                     'stdout' => data_get($result, 'stdout'),
                     'stderr' => data_get($result, 'stderr'),
                     'compile_output' => data_get($result, 'compile_output'),
+                    'message' => $judgeMessage,
                     'time' => data_get($result, 'time'),
                     'memory' => data_get($result, 'memory'),
                 ]);
         } catch (Throwable $error) {
             return back()
                 ->withInput()
-                ->with('judge_error', 'Could not reach Judge0: '.$error->getMessage());
+                ->with('judge_error', 'Could not judge or save submission: '.$error->getMessage());
         }
+    }
+
+    private function verdictStatus(array $result): string
+    {
+        $status = data_get($result, 'status.description');
+
+        if (is_string($status) && trim($status) !== '') {
+            return $status;
+        }
+
+        if (! empty(data_get($result, 'compile_output'))) {
+            return 'Compilation Error';
+        }
+
+        if (! empty(data_get($result, 'stderr'))) {
+            return 'Runtime Error';
+        }
+
+        if (! empty(data_get($result, 'error'))) {
+            return 'Judge Error';
+        }
+
+        if (! empty(data_get($result, 'message'))) {
+            return 'Judge Error';
+        }
+
+        return 'Unknown';
+    }
+
+    private function judgeMessage(array $result, string $status): ?string
+    {
+        $message = data_get($result, 'error')
+            ?: data_get($result, 'message')
+            ?: data_get($result, 'compile_output')
+            ?: data_get($result, 'stderr');
+
+        if (is_string($message) && trim($message) !== '') {
+            return trim($message);
+        }
+
+        return $status === 'Unknown'
+            ? 'Judge0 did not return a status description for this submission.'
+            : null;
     }
 }

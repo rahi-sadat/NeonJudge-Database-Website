@@ -105,6 +105,36 @@
     color: var(--text-primary);
 }
 
+.page-problem-details .judge-history {
+    display: grid;
+    gap: 14px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+.page-problem-details .judge-history-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.page-problem-details .judge-history-top .eyebrow {
+    margin-bottom: 10px;
+}
+
+.page-problem-details .judge-history h2 {
+    font-size: 1.25rem;
+}
+
+.page-problem-details .judge-history .table-wrap {
+    border-radius: var(--radius-md);
+}
+
+.page-problem-details .judge-history-table {
+    min-width: 640px;
+}
+
 .page-problem-details .judge-inline-status {
     min-height: 58px;
     display: flex;
@@ -156,6 +186,7 @@
 }
 
 .page-problem-details .judge-status-error,
+.page-problem-details .judge-status-judge-error,
 .page-problem-details .judge-status-wrong-answer,
 .page-problem-details .judge-status-internal-error,
 .page-problem-details .judge-status-compilation-error,
@@ -166,6 +197,7 @@
 }
 
 .page-problem-details .judge-status-error .judge-status-dot,
+.page-problem-details .judge-status-judge-error .judge-status-dot,
 .page-problem-details .judge-status-wrong-answer .judge-status-dot,
 .page-problem-details .judge-status-internal-error .judge-status-dot,
 .page-problem-details .judge-status-compilation-error .judge-status-dot,
@@ -216,12 +248,17 @@
 
 @media (max-width: 640px) {
     .page-problem-details .judge-panel-top,
+    .page-problem-details .judge-history-top,
     .page-problem-details .judge-testcases,
     .page-problem-details .judge-result-grid {
         grid-template-columns: 1fr;
     }
 
     .page-problem-details .judge-panel-top {
+        display: grid;
+    }
+
+    .page-problem-details .judge-history-top {
         display: grid;
     }
 }
