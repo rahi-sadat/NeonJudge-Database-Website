@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -19,13 +20,15 @@ class AuthController extends Controller
             'password' => ['required', 'string', 'min:5', 'confirmed'],
         ]);
 
-        $user = User::create([
-            'handle' => $validated['handle'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'role' => 'user',
-        ]);
-
+       DB::insert("
+        INSERT INTO users (handle, email, password, role, rating, created_at, updated_at)
+        VALUES (?, ?, ?, 'user', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+    ", [
+        $validated['handle'],
+        $validated['email'],
+        Hash::make($validated['password'])
+    ]);
+       $user = User::where('email', $validated['email'])->first();
         Auth::login($user);
         $request->session()->regenerate();
 

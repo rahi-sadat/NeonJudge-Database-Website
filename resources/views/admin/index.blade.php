@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Admin Panel | NeonJudge')
+@section('title', 'Admin Dashboard | NeonJudge')
 @section('body_class', 'page-admin')
 
 @push('styles')
@@ -10,8 +10,8 @@
 @section('content')
 <section class="page-header">
     <p class="eyebrow">Admin Console</p>
-    <h1>Admin Panel</h1>
-    <p class="muted">Approve contests, monitor submissions, and review platform reports.</p>
+    <h1>Contest Dashboard</h1>
+    <p class="muted">Review pending contests and platform reports.</p>
 </section>
 
 <section class="section">
@@ -36,19 +36,5 @@
             @endforeach
         </article>
     </div>
-
-    <article class="card top-space">
-        <h2>Suspicious Submissions</h2>
-        <div class="table-wrap">
-            <table class="data-table">
-                <thead><tr><th>User</th><th>Problem</th><th>Reason</th><th>Time</th></tr></thead>
-                <tbody>
-                    @foreach ($suspicious as $row)
-                        <tr><td>{{ $row['user'] }}</td><td>{{ $row['problem'] }}</td><td>{{ $row['reason'] }}</td><td>{{ $row['time'] }}</td></tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </article>
 </section>
 @endsection

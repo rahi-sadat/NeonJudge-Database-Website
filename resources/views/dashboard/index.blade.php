@@ -8,25 +8,13 @@
 @endpush
 
 @section('content')
-@php
-    $currentUser = null;
-
-    if (app()->bound('auth') && config('auth.defaults.guard')) {
-        try {
-            $currentUser = auth()->user();
-        } catch (\Throwable $exception) {
-            $currentUser = null;
-        }
-    }
-@endphp
-
 <section class="page-header">
     <p class="eyebrow">Student Console</p>
     <h1>User Statistics</h1>
     <p class="muted">Personal progress, submissions, and recommended practice problems.</p>
 </section>
 
-@if ($currentUser)
+@auth
     <section class="section">
         <div class="grid stat-grid">
             <article class="card stat-card"><span>Rating</span><strong>{{ $stats['rating'] }}</strong></article>
@@ -38,9 +26,12 @@
             <article class="card">
                 <h2>Recent Submissions</h2>
                 @foreach ($recent as $item)
+                    @php
+                        $verdictType = strtolower(str_replace(' ', '-', $item['verdict']));
+                    @endphp
                     <div class="list-row">
                         <span>{{ $item['problem'] }} <small>{{ $item['language'] }}</small></span>
-                        <x-badge :type="strtolower(str_replace(' ', '-', $item['verdict']))">{{ $item['verdict'] }}</x-badge>
+                        <x-badge :type="$verdictType">{{ $item['verdict'] }}</x-badge>
                     </div>
                 @endforeach
             </article>
@@ -48,9 +39,12 @@
             <article class="card">
                 <h2>Practice Progress</h2>
                 @foreach ($progress as $label => $percent)
+                    @php
+                        $barWidth = max(0, min(100, (int) $percent));
+                    @endphp
                     <div class="progress-line">
                         <span>{{ $label }}</span>
-                        <div><i style="width: {{ $percent }}%"></i></div>
+                        <div><i style="width: {{ $barWidth }}%"></i></div>
                         <strong>{{ $percent }}%</strong>
                     </div>
                 @endforeach
@@ -78,5 +72,5 @@
             </div>
         </article>
     </section>
-@endif
+@endauth
 @endsection

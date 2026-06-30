@@ -2,20 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class AdminController extends Controller
 {
-    public function index(): View
+    public function index(): View|RedirectResponse
     {
-        $pendingContests = [
-            ['title' => 'Database Finals Challenge', 'created_by' => 'Setter Desk', 'start' => '2026-06-18 09:00'],
-            ['title' => 'First Year Warmup', 'created_by' => 'ACM Club', 'start' => '2026-06-22 16:00'],
-        ];
+        if (! Auth::check()) {
+            return redirect()->guest(route('login'));
+        }
 
-        $suspicious = [
-            ['user' => 'coder_rahim', 'problem' => 'NJ330', 'reason' => 'Many submissions in a short time', 'time' => '12:58 PM'],
-            ['user' => 'nabila_dev', 'problem' => 'NJ204', 'reason' => 'Similar code pattern flagged', 'time' => '01:10 PM'],
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        if (! $user->isAdmin()) {
+            abort(403);
+        }
+
+        $pendingContests = [
+            ['title' => 'Algorithm Finals Challenge', 'created_by' => 'Setter Desk', 'start' => '2026-06-18 09:00'],
+            ['title' => 'Newcomer Code Jam', 'created_by' => 'ACM Club', 'start' => '2026-06-22 16:00'],
         ];
 
         $reports = [
@@ -25,6 +33,6 @@ class AdminController extends Controller
             'Total submissions' => 1286,
         ];
 
-        return view('admin.index', compact('pendingContests', 'suspicious', 'reports'));
+        return view('admin.index', compact('pendingContests', 'reports'));
     }
 }
